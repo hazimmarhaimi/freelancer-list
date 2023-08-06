@@ -1,72 +1,75 @@
-# Getting Started with Create React App
+# Freelancer List
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Freelancer List is a web application built using React and React-Bootstrap that allows you to manage a list of freelancers. It provides features to view, create, edit, and delete freelancers from the system. Additionally, the application supports filtering the list of freelancers based on various criteria.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoint](#api-endpoint)
+- [Filtering](#filtering)
+- [Pagination](#pagination)
+- [License](#license)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- View the list of freelancers with their basic details such as ID, Username, Email, Phone Number, and Skillsets.
+- Create new freelancers with mandatory fields including Username, Email, Phone Number, Skillsets, and Hobby.
+- Edit existing freelancer details, update their information, and save changes.
+- Delete freelancers from the list after a confirmation prompt.
+- Filter freelancers based on different criteria such as ID, Username, Email, Phone Number, and Skillsets.
+- View detailed information of a freelancer in a separate modal window.
+- Pagination support for navigating through the list of freelancers.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+Before running the application, make sure you have the following dependencies installed:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js: Ensure you have Node.js installed on your machine.
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository to your local machine using `git clone https://github.com/hazimmarhaimi/freelancer-list.git`.
+2. Navigate to the project directory using the terminal or command prompt.
+3. Run `npm install` to install all the required dependencies.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Start the development server by running `npm start` in the project directory.
+2. The application will be accessible at `http://localhost:3002/` in your web browser.
+3. The Freelancer List page displays a table of freelancers with basic information, including ID, Username, Email, Phone Number, and Skillsets.
+4. Use the "Create" button (+ icon) to add a new freelancer. Fill in the required fields in the modal and click "Save."
+5. To edit a freelancer, click the "Edit" button (pencil icon) in the Actions column of the table. Modify the freelancer's details in the modal and click "Update."
+6. To delete a freelancer, click the "Delete" button (trash icon) in the Actions column of the table. Confirm the deletion in the prompt.
+7. Use the search bar to filter freelancers based on different criteria (ID, Username, Email, Phone Number, and Skillsets).
+8. Pagination buttons are available at the bottom of the table for navigating between pages.
 
-### `npm run eject`
+## API Endpoint
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The application fetches and interacts with the freelancer data through a RESTful API. The API endpoint is set in the `FreelancerList.js` file. Make sure to update the endpoint to your actual API URL in the `apiEndpoint` constant.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```jsx
+const apiEndpoint = "http://YOUR_NEW_IP_ADDRESS/api/FreelancerData";
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Replace `'YOUR_NEW_IP_ADDRESS'` with the actual IP address of your API server.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Filtering
 
-## Learn More
+The application supports filtering the list of freelancers based on various criteria such as ID, Username, Email, Phone Number, and Skillsets. The filtering logic is implemented in the `handleFilterChange` and `handleGetFilter` functions in `FreelancerList.js`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Pagination
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Pagination is implemented to display a limited number of freelancers per page. You can change the number of freelancers displayed per page by modifying the `itemsPerPage` constant in `FreelancerList.js`.
 
-### Code Splitting
+```jsx
+const itemsPerPage = 5; // Number of items to display per page
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-# freelancer-list
+Feel free to further customize this documentation according to your needs. If you make any changes to the project or add additional features, make sure to update the documentation to reflect those changes. Happy coding!
