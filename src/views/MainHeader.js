@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const MainHeader = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar  variant="dark" expand="lg">
       <Container>
         <Link to="/" className="navbar-brand">
           My Freelancer App

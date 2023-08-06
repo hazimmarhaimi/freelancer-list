@@ -36,6 +36,16 @@
     transform: rotate(360deg);
   }
 }
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 1px 1px 18px 0px #eeeeef;
+}
+.navbar-brand , .nav-link {
+color: #000;
+}
+.nav-link:focus, .nav-link:hover {
+  color: rgba(156, 155, 155, 0.75);
+}
 
 .freelancerlist_table {
   margin: 0 auto;
@@ -55,20 +65,18 @@
 
 .btn{
   margin:3px 3px 3px 3px;
+  border-radius: 32px;
 }
 
 .btn_create {
  float: right;
+ margin-top: 4px;
 }
 
 .btn_paging{
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.page-label{
-  
 }
 .sidebar-container{
   display: flex;

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Form ,Spinner,Alert } from 'react-bootstrap';
+import { BiPlusCircle } from 'react-icons/bi';
+import { BsInfoCircle } from 'react-icons/bs';
+import { FiEdit } from 'react-icons/fi';
+import { AiOutlineDelete } from 'react-icons/ai';
 import SearchBar from '../views/SearchBar';
 
 const FreelancerList = () => {
 
   // {Variables}
-  const [editFreelancer, setEditFreelancer] = useState(null);
   const [viewFreelancer, setViewFreelancer] = useState(null);
+  const [editFreelancer, setEditFreelancer] = useState(null);
   const [freelancers, setFreelancers] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newFreelancer, setNewFreelancer] = useState({
@@ -23,11 +27,14 @@ const FreelancerList = () => {
   const [deleteFreelancerId, setDeleteFreelancerId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [filterCriteria, setFilterCriteria] = useState('');
+  const [filterValue, setFilterValue] = useState('');
 
 
   useEffect(() => {
     // Fetch the list of freelancers from the API
-    axios.get('http://localhost:56887/api/FreelancerData')
+    axios.get('http://localhost:55149/api/FreelancerData')
       .then(response => {
         setFreelancers(response.data);
         setFilteredFreelancers(response.data);
@@ -64,10 +71,10 @@ const FreelancerList = () => {
     }
 
     // Send the newFreelancer data to the API
-    axios.post('http://localhost:56887/api/FreelancerData', newFreelancer)
+    axios.post('http://localhost:55149/api/FreelancerData', newFreelancer)
       .then(response => {
         // Refresh the list of freelancers after successful creation
-        axios.get('http://localhost:56887/api/FreelancerData')
+        axios.get('http://localhost:55149/api/FreelancerData')
           .then(response => {
             setFreelancers(response.data);
             setFilteredFreelancers(response.data);
@@ -95,19 +102,28 @@ const FreelancerList = () => {
   };
 
   const handleFilterChange = (event) => {
-    setFilterId(event.target.value);
+    const { id, value } = event.target;
+  
+    if (id === 'filterCriteria' && value === 'Select All') {
+      // Reset both filter criteria and filter value
+      setFilterCriteria('');
+      setFilterValue('');
+    } else if (id === 'filterCriteria') {
+      setFilterCriteria(value);
+    } else if (id === 'filterValue') {
+      setFilterValue(value);
+    }
   };
-
+  
   const handleGetFilter = () => {
-    // Filter the freelancers based on the entered ID
-    const filteredData = freelancers.filter(freelancer => {
-      return freelancer.Id.toString().includes(filterId);
+    // Filter the freelancers based on the selected filter criteria and value
+    const filteredData = freelancers.filter((freelancer) => {
+      if (!filterCriteria || !filterValue) return true; // Return all if filterCriteria or filterValue is empty
+
+      const fieldValue = freelancer[filterCriteria]?.toString().toLowerCase();
+      return fieldValue.includes(filterValue.toLowerCase());
     });
     setFilteredFreelancers(filteredData);
-  };
-  const handleView = (freelancer) => {
-    setEditFreelancer({ ...freelancer }); // Create a shallow copy of the selected freelancer
-    handleShowModal(); // Show the edit modal
   };
 
   const handleEdit = (freelancer) => {
@@ -120,10 +136,10 @@ const FreelancerList = () => {
     setIsUpdating(true);
 
     // Send the updated freelancer data to the API
-    axios.put(`http://localhost:56887/api/FreelancerData/${editFreelancer.Id}`, editFreelancer)
+    axios.put(`http://localhost:55149/api/FreelancerData/${editFreelancer.Id}`, editFreelancer)
       .then(response => {
         // Refresh the list of freelancers after successful update
-        axios.get('http://localhost:56887/api/FreelancerData')
+        axios.get('http://localhost:55149/api/FreelancerData')
           .then(response => {
             setFreelancers(response.data);
             setFilteredFreelancers(response.data);
@@ -151,9 +167,9 @@ const FreelancerList = () => {
 
   const handleContinueDelete = () => {
     if (deleteFreelancerId) {
-      axios.delete(`http://localhost:56887/api/FreelancerData/${deleteFreelancerId}`)
+      axios.delete(`http://localhost:55149/api/FreelancerData/${deleteFreelancerId}`)
         .then(response => {
-          axios.get('http://localhost:56887/api/FreelancerData')
+          axios.get('http://localhost:55149/api/FreelancerData')
             .then(response => {
               setFreelancers(response.data);
               setFilteredFreelancers(response.data);
@@ -187,6 +203,17 @@ const FreelancerList = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const handleView = (freelancer) => {
+    setViewFreelancer(freelancer); // Set the selected freelancer to viewFreelancer
+    handleShowViewModal(); // Show the view modal
+  };
+  const handleShowViewModal = () => {
+    setShowViewModal(true);
+  };
+  const handleCloseViewModal = () => {
+    setShowViewModal(false);
+    setViewFreelancer(null); // Reset viewFreelancer state when closing the modal
+  };
   
   
 
@@ -197,9 +224,18 @@ const FreelancerList = () => {
         <thead>
           <tr>
             <td colSpan="9">
-            <div><Button className='btn_create btn' variant="primary" onClick={handleShowModal}>Register</Button></div>
-              <div>
-                <SearchBar filterId={filterId} handleFilterChange={handleFilterChange} handleGetFilter={handleGetFilter} />
+            <div>
+              <Button className='btn_create btn' variant="primary" onClick={handleShowModal}>
+                <BiPlusCircle />
+              </Button>
+            </div>
+                <div>
+                <SearchBar 
+                filterValue={filterValue}
+                filterCriteria={filterCriteria}
+                handleFilterChange={handleFilterChange}
+                handleGetFilter={handleGetFilter} 
+                 />
               </div>
               
             </td>
@@ -232,9 +268,9 @@ const FreelancerList = () => {
                 <td>{freelancer.Skillsets}</td>
                 {/* <td>{freelancer.Hobby}</td> */}
                 <td>
-                  <Button variant="primary" className='btn' onClick={() => handleView(freelancer)}>View</Button>
-                  <Button variant="primary" className='btn' onClick={() => handleEdit(freelancer)}>Edit</Button>
-                  <Button variant="danger" className='btn' onClick={() => handleDelete(freelancer.Id)}>Delete</Button>
+                  <Button variant="primary" className='btn' onClick={() => handleView(freelancer)}><BsInfoCircle /></Button>
+                  <Button variant="primary" className='btn' onClick={() => handleEdit(freelancer)}><FiEdit />Edit</Button>
+                  <Button variant="danger" className='btn' onClick={() => handleDelete(freelancer.Id)}> <AiOutlineDelete />Delete</Button>
                 </td>
               </tr>
             ))
@@ -299,49 +335,42 @@ const FreelancerList = () => {
           <Button variant="primary" onClick={handleSaveNewFreelancer}>Save</Button>
         </Modal.Footer>
       </Modal>
-      
+
       {/* View Modal */}
-      <Modal show={showModal && editFreelancer !== null} onHide={handleCloseModal}>
+      <Modal show={showViewModal && viewFreelancer !== null} onHide={handleCloseViewModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Freelancer</Modal.Title>
+          <Modal.Title>View Freelancer Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {isUpdating ? (
-            <div style={{ textAlign: 'center' }}>
-              <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          ) : (
+          {viewFreelancer ? (
             <Form>
-            <Form.Group controlId="edit-username">
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" name="Username" value={editFreelancer?.Username || ''} onChange={handleInputChange} />
-            </Form.Group>
-            <Form.Group controlId="edit-email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" name="Email" value={editFreelancer?.Email || ''} onChange={handleInputChange} />
-            </Form.Group>
-            <Form.Group controlId="edit-phone">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control type="text" name="PhoneNumber" value={editFreelancer?.PhoneNumber || ''} onChange={handleInputChange} />
-            </Form.Group>
-            <Form.Group controlId="edit-skillsets">
-              <Form.Label>Skillsets</Form.Label>
-              <Form.Control type="text" name="Skillsets" value={editFreelancer?.Skillsets || ''} onChange={handleInputChange} />
-            </Form.Group>
-            <Form.Group controlId="edit-hobby">
-              <Form.Label>Hobby</Form.Label>
-              <Form.Control type="text" name="Hobby" value={editFreelancer?.Hobby || ''} onChange={handleInputChange} />
-            </Form.Group>
-          </Form>
+              <Form.Group controlId="view-username">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" name="Username" value={viewFreelancer.Username} readOnly />
+              </Form.Group>
+              <Form.Group controlId="view-email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" name="Email" value={viewFreelancer.Email} readOnly />
+              </Form.Group>
+              <Form.Group controlId="view-phone">
+                <Form.Label>Phone Number</Form.Label>
+                <Form.Control type="text" name="PhoneNumber" value={viewFreelancer.PhoneNumber} readOnly />
+              </Form.Group>
+              <Form.Group controlId="view-skillsets">
+                <Form.Label>Skillsets</Form.Label>
+                <Form.Control type="text" name="Skillsets" value={viewFreelancer.Skillsets} readOnly />
+              </Form.Group>
+              <Form.Group controlId="view-hobby">
+                <Form.Label>Hobby</Form.Label>
+                <Form.Control type="text" name="Hobby" value={viewFreelancer.Hobby} readOnly />
+              </Form.Group>
+            </Form>
+          ) : (
+            <div>No freelancer selected.</div>
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => { handleCloseModal(); setEditFreelancer(null); }}>Cancel</Button>
-          {!isUpdating && (
-            <Button variant="primary" onClick={handleUpdateFreelancer}>Update</Button>
-          )}
+          <Button variant="secondary" onClick={handleCloseViewModal}>Close</Button>
         </Modal.Footer>
       </Modal>
 
