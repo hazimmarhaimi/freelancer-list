@@ -7,6 +7,8 @@ import { FiEdit } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import SearchBar from '../views/SearchBar';
 
+const apiEndpoint = 'http://localhost:55149/api/FreelancerData';
+
 const FreelancerList = () => {
 
   // {Variables}
@@ -34,7 +36,7 @@ const FreelancerList = () => {
 
   useEffect(() => {
     // Fetch the list of freelancers from the API
-    axios.get('http://localhost:55149/api/FreelancerData')
+    axios.get(apiEndpoint)
       .then(response => {
         setFreelancers(response.data);
         setFilteredFreelancers(response.data);
@@ -71,10 +73,10 @@ const FreelancerList = () => {
     }
 
     // Send the newFreelancer data to the API
-    axios.post('http://localhost:55149/api/FreelancerData', newFreelancer)
+    axios.post(apiEndpoint, newFreelancer)
       .then(response => {
         // Refresh the list of freelancers after successful creation
-        axios.get('http://localhost:55149/api/FreelancerData')
+        axios.get(apiEndpoint)
           .then(response => {
             setFreelancers(response.data);
             setFilteredFreelancers(response.data);
@@ -136,10 +138,10 @@ const FreelancerList = () => {
     setIsUpdating(true);
 
     // Send the updated freelancer data to the API
-    axios.put(`http://localhost:55149/api/FreelancerData/${editFreelancer.Id}`, editFreelancer)
+    axios.put(`${apiEndpoint}/${editFreelancer.Id}`, editFreelancer)
       .then(response => {
         // Refresh the list of freelancers after successful update
-        axios.get('http://localhost:55149/api/FreelancerData')
+        axios.get(apiEndpoint)
           .then(response => {
             setFreelancers(response.data);
             setFilteredFreelancers(response.data);
@@ -167,9 +169,9 @@ const FreelancerList = () => {
 
   const handleContinueDelete = () => {
     if (deleteFreelancerId) {
-      axios.delete(`http://localhost:55149/api/FreelancerData/${deleteFreelancerId}`)
+      axios.delete(`${apiEndpoint}/${deleteFreelancerId}`)
         .then(response => {
-          axios.get('http://localhost:55149/api/FreelancerData')
+          axios.get(apiEndpoint)
             .then(response => {
               setFreelancers(response.data);
               setFilteredFreelancers(response.data);
