@@ -11,7 +11,6 @@ The Freelancer List is a web application built using React and React-Bootstrap t
 - [API Endpoint](#api-endpoint)
 - [Filtering](#filtering)
 - [Pagination](#pagination)
-- [License](#license)
 
 ## Features
 
@@ -67,9 +66,3 @@ Pagination is implemented to display a limited number of freelancers per page. Y
 ```jsx
 const itemsPerPage = 5; // Number of items to display per page
 ```
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-Feel free to further customize this documentation according to your needs. If you make any changes to the project or add additional features, make sure to update the documentation to reflect those changes. Happy coding!
