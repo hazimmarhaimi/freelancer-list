@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import FreelancerList from "./pages/FreelancerList";
-import MainHeader from "./views/MainHeader";
-import MainFooter from "./views/MainFooter";
+import MainHeader from "./components/MainHeader";
+import MainFooter from "./components/MainFooter";
 import "./App.css";
 
 function App() {
