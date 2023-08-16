@@ -32,7 +32,9 @@ const FreelancerList = () => {
   const [filterCriteria, setFilterCriteria] = useState("");
   const [filterValue, setFilterValue] = useState("");
 
+  /* Get Data from database through API*/
   useEffect(() => {
+    //Runs on the first render
     // Fetch the list of freelancers from the API
     axios
       .get(apiEndpoint)

@@ -14,7 +14,6 @@ function App() {
       >
         <MainHeader />
         <div style={{ flex: "1", padding: "20px" }}>
-          {/* <Sidebar /> */}
           <Routes>
             <Route path="/freelancerlist" element={<FreelancerList />} />
             {/* Add other routes here */}
